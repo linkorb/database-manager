@@ -16,7 +16,7 @@ use LinkORB\Component\DatabaseManager\DatabaseManager;
  * ConnectionConfigCommand retrieves configuration info
  *
  */
-class DatabaseRunFixtureCommand extends Command
+class DatabaseLoadFixtureCommand extends Command
 {
     private $command;
 

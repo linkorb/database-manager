@@ -48,7 +48,7 @@ class DatabaseManager
             'driver' => 'pdo_mysql',
         );
         
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($params, $config);
+        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $dbalconfig);
         return $conn;
     }
 }

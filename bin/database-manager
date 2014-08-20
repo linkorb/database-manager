@@ -8,5 +8,6 @@ require_once(__DIR__ . "/../vendor/autoload.php");
 $application = new Application('Database Manager Console Client', '1.0.0');
 $application->setCatchExceptions(true);
 $application->add(new \LinkORB\Component\DatabaseManager\Command\ConnectionConfigCommand());
-$application->add(new \LinkORB\Component\DatabaseManager\Command\DatabaseRunFixtureCommand());
+$application->add(new \LinkORB\Component\DatabaseManager\Command\DatabaseLoadFixtureCommand());
+$application->add(new \LinkORB\Component\DatabaseManager\Command\DatabaseLoadSchemaCommand());
 $application->run();

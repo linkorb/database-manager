@@ -23,5 +23,6 @@
         "psr-0": {
             "LinkORB\\Component\\DatabaseManager\\": "src/"
         }
-    }
+    },
+    "bin": ["bin/database-manager"]
 }
