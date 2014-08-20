@@ -1,0 +1,27 @@
+{
+    "name": "linkorb/database-manager",
+    "description": "Database Management utilities: connectivity, backups, fixtures, etc",
+    "homepage": "http://www.github.com/linkorb/database-manager",
+    "keywords": ["php", "api", "database", "fixtures", "backup", "mysql", "postgresql", "pdo", "doctrine"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Joost Faassen",
+            "email": "j.faassen@linkorb.com",
+            "role": "Development"
+        }
+    ],
+    "require": {
+        "doctrine/dbal": "2.5.*@dev",
+        "dflydev/doctrine-orm-service-provider": "2.0.*@dev",
+        "phpunit/dbunit": "1.3.*@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "LinkORB\\Component\\DatabaseManager": "src/LinkORB/Component/DatabaseManager"
+        }
+    }
+}
