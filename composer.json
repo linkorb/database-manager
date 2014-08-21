@@ -25,5 +25,6 @@
             "LinkORB\\Component\\DatabaseManager\\": "src/DatabaseManager"
         }
     },
-    "bin": ["bin/database-manager"]
+    "bin": ["bin/database-manager"],
+    "license": "MIT"
 }
