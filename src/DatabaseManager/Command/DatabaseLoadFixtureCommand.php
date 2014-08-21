@@ -28,7 +28,7 @@ class DatabaseLoadFixtureCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('database:runfixture')
+            ->setName('database:loadfixture')
             ->setDefinition(array(
                 new InputArgument('dbname', InputArgument::REQUIRED, 'Database name'),
                 new InputArgument('filename', InputArgument::REQUIRED, 'Fixture (yml) filename')
