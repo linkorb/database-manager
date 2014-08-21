@@ -61,6 +61,15 @@ When the `--apply` flag is provided, the actual changes are applied
 
 Load the fixture data from `/path/to/fixture.yml`, and add it to `dbname`.
 
+
+## Examples
+
+Please refer to the `examples/` directory for:
+
+* Example database .conf file
+* Example schema xml files
+* Example fixture (data) yml files
+
 ## Contributing
 
 Ready to build and improve on this repo? Excellent!

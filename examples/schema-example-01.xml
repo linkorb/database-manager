@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+
+    <table name="user">
+        <column name="username" type="varchar(32)" />
+        <column name="password" type="varchar(128)" />
+        <column name="displayname" type="varchar(64)" />
+        <column name="email" type="varchar(64)" />
+    </table>
+
+    <table name="project">
+        <column name="code" type="varchar(32)" />
+        <column name="description" type="text" />
+    </table>
+
+    <table name="user2project">
+        <column name="username" type="varchar(32)" />
+        <column name="projectcode" type="varchar(32)" />
+    </table>
+
+</schema>
