@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 
 use LinkORB\Component\DatabaseManager\DatabaseManager;
+use RuntimeException;
 
 /**
  * ConnectionConfigCommand retrieves configuration info
@@ -74,6 +75,9 @@ class DatabaseLoadSchemaCommand extends Command
                 $part = explode('(', $columntype);
                 $options = array();
                 switch($part[0]) {
+                    case "text":
+                        $type = 'text';
+                        break;
                     case "varchar":
                         $type = 'string';
                         $options['length'] = $part[1];
