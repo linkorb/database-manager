@@ -67,7 +67,7 @@ class DatabaseLoadSchemaCommand extends Command
             //echo $child->getName() . ": " . $child . "<br>";
             $table = $toSchema->createTable((string)$tableNode['name']);
 
-            $table->addColumn('id', 'integer', array("unsigned" => true));
+            $table->addColumn('id', 'integer', array("unsigned" => true, 'autoincrement' => true));
             $table->setPrimaryKey(array("id"));
 
             foreach ($tableNode->column as $columnNode) {
