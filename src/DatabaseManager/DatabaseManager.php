@@ -46,6 +46,7 @@ class DatabaseManager
             'password' => $connectionconfig->getPassword(),
             'host' => $connectionconfig->getHost(),
             'driver' => 'pdo_mysql',
+            'charset' => 'utf8'
         );
         
         $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $dbalconfig);
