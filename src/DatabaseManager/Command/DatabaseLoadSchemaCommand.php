@@ -75,6 +75,9 @@ class DatabaseLoadSchemaCommand extends Command
                 $part = explode('(', $columntype);
                 $options = array();
                 switch($part[0]) {
+                    case "int":
+                        $type = 'int';
+                        break;
                     case "text":
                         $type = 'text';
                         break;
