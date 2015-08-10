@@ -40,6 +40,11 @@ class ConnectionConfig
     {
         return $this->host;
     }
+
+    public function setPort($port)
+    {
+        $this->port = $port;
+    }
     
     public function getPort()
     {
