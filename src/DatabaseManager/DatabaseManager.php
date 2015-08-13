@@ -30,7 +30,7 @@ class DatabaseManager
 
     /**
      * @param  string $dbname
-     * @return ConnectionConfig
+     * @return DatabaseConfig
      */
     public function getDatabaseConfigByDatabaseName($dbname)
     {
@@ -57,13 +57,42 @@ class DatabaseManager
     }
 
     /**
+     * @param  string $url
+     * @return DatabaseConfig
+     */
+    public function getDatabaseConfigFromUrl($url)
+    {
+        $url = parse_url($url);
+        $dbname = trim($url['path'], '/');
+
+        $databaseconfig = new DatabaseConfig($dbname);
+        $connectionconfig = new ConnectionConfig('default');
+
+        $connectionconfig->setDatabaseName($dbname);
+        $connectionconfig->setHost($url['host']);
+        if (isset($url['port'])) {
+            $connectionconfig->setPort($url['port']);
+        }
+        $connectionconfig->setUsername($url['user']);
+        $connectionconfig->setPassword($url['pass']);
+
+        $databaseconfig->addConnectionConfig($connectionconfig);
+        return $databaseconfig;
+    }
+
+    /**
      * @param  string $dbname
      * @param  string $connectionkey
      * @return PDO
      */
     public function getPdo($dbname, $connectionkey = 'default')
     {
-        $databaseconfig = $this->getDatabaseConfigByDatabaseName($dbname);
+        if ($this->isValidUrl($dbname)) {
+            $databaseconfig = $this->getDatabaseConfigFromUrl($dbname);
+        } else {
+            $databaseconfig = $this->getDatabaseConfigByDatabaseName($dbname);
+        }
+
         $connectionconfig = $databaseconfig->getConnectionConfig($connectionkey);
         $pdo = new PDO(
             $connectionconfig->getDsn(),
@@ -71,5 +100,14 @@ class DatabaseManager
             $connectionconfig->getPassword()
         );
         return $pdo;
+    }
+
+    /**
+     * @param  string  $url
+     * @return boolean
+     */
+    protected function isValidUrl($url)
+    {
+        return false !== filter_var($url, FILTER_VALIDATE_URL);
     }
 }
