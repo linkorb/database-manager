@@ -2,6 +2,9 @@
 
 namespace LinkORB\Component\DatabaseManager;
 
+use LinkORB\Component\DatabaseManager\Exception\InvalidDatabaseException;
+use LinkORB\Component\DatabaseManager\Exception\ConfigNotFoundException;
+
 use PDO;
 
 class DatabaseManager
@@ -34,12 +37,17 @@ class DatabaseManager
      */
     public function getDatabaseConfigByDatabaseName($dbname)
     {
-        $inidata = parse_ini_file(sprintf(
+        $filename = sprintf(
             '%s/%s.conf',
             rtrim($this->getConfigPath(), '/'),
             $dbname
-        ));
+        );
 
+        if (!file_exists($filename)) {
+            throw new ConfigNotFoundException($dbname);
+        }
+
+        $inidata = parse_ini_file($filename);
         $databaseconfig = new DatabaseConfig($dbname);
 
         $connectionconfig = new ConnectionConfig('default');
@@ -81,18 +89,34 @@ class DatabaseManager
     }
 
     /**
+     * @param  string $dbname URL or
+     * @return DatabaseConfig
+     */
+    public function getDatabaseConfig($dbname)
+    {
+        switch (true)
+        {
+            case $this->isValidUrl($dbname):
+                return $this->getDatabaseConfigFromUrl($dbname);
+                break;
+
+            case $this->isValidName($dbname):
+                return $this->getDatabaseConfigByDatabaseName($dbname);
+                break;
+
+            default:
+                throw new InvalidDatabaseException($dbname);
+        }
+    }
+
+    /**
      * @param  string $dbname
      * @param  string $connectionkey
      * @return PDO
      */
     public function getPdo($dbname, $connectionkey = 'default')
     {
-        if ($this->isValidUrl($dbname)) {
-            $databaseconfig = $this->getDatabaseConfigFromUrl($dbname);
-        } else {
-            $databaseconfig = $this->getDatabaseConfigByDatabaseName($dbname);
-        }
-
+        $databaseconfig = $this->getDatabaseConfig($dbname);
         $connectionconfig = $databaseconfig->getConnectionConfig($connectionkey);
         $pdo = new PDO(
             $connectionconfig->getDsn(),
@@ -130,8 +154,17 @@ class DatabaseManager
      * @param  string  $url
      * @return boolean
      */
-    protected function isValidUrl($url)
+    public function isValidUrl($url)
     {
         return false !== filter_var($url, FILTER_VALIDATE_URL);
+    }
+
+    /**
+     * @param  string  $name
+     * @return boolean
+     */
+    public function isValidName($name)
+    {
+        return preg_match('/^[a-zA-Z0-9_]+$/', $name) != false;
     }
 }
