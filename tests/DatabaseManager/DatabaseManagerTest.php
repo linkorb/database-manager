@@ -11,29 +11,33 @@ use LinkORB\Component\DatabaseManager\DatabaseManager;
  */
 class DatabaseManagerTest extends \PHPUnit_Framework_TestCase
 {
+    private $dbmanager;
+    private $expectedUrl = "mysql://my_username:my_password@localhost:1234/mydb";
+
+    public function setUp()
+    {
+        $path = realpath(__DIR__ . '/../fixtures');
+        $this->dbmanager = new DatabaseManager($path);
+    }
+
     public function testIsValidUrl()
     {
-        $dbmanager = new DatabaseManager();
-        $this->assertFalse($dbmanager->isValidUrl('databasename'));
-        $this->assertFalse($dbmanager->isValidUrl('invalid/databasename'));
-        $this->assertTrue ($dbmanager->isValidUrl('mysql://host/databasename'));
+        $this->assertFalse($this->dbmanager->isValidUrl('databasename'));
+        $this->assertFalse($this->dbmanager->isValidUrl('invalid/databasename'));
+        $this->assertTrue ($this->dbmanager->isValidUrl('mysql://host/databasename'));
     }
 
     public function testIsValidName()
     {
-        $dbmanager = new DatabaseManager();
-        $this->assertTrue ($dbmanager->isValidName('databasename'));
-        $this->assertTrue ($dbmanager->isValidName('DATABASE_NAME'));
-        $this->assertFalse($dbmanager->isValidName('invalid/databasename'));
-        $this->assertFalse($dbmanager->isValidName('mysql://host/databasename'));
+        $this->assertTrue ($this->dbmanager->isValidName('databasename'));
+        $this->assertTrue ($this->dbmanager->isValidName('DATABASE_NAME'));
+        $this->assertFalse($this->dbmanager->isValidName('invalid/databasename'));
+        $this->assertFalse($this->dbmanager->isValidName('mysql://host/databasename'));
     }
 
     public function testGetDatabaseConfigByDatabaseName()
     {
-        $path = realpath(__DIR__ . '/../fixtures');
-
-        $dbmanager = new DatabaseManager($path);
-        $databaseconfig = $dbmanager->getDatabaseConfigByDatabaseName('mydb');
+        $databaseconfig = $this->dbmanager->getDatabaseConfigByDatabaseName('mydb');
         $connectionconfig = $databaseconfig->getConnectionConfig('default');
 
         $this->assertEquals('default', $connectionconfig->getName());
@@ -47,10 +51,7 @@ class DatabaseManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDatabaseConfigFromUrl()
     {
-        $url = "mysql://my_username:my_password@localhost:1234/mydb";
-
-        $dbmanager = new DatabaseManager();
-        $databaseconfig = $dbmanager->getDatabaseConfigFromUrl($url);
+        $databaseconfig = $this->dbmanager->getDatabaseConfigFromUrl($this->expectedUrl);
         $connectionconfig = $databaseconfig->getConnectionConfig('default');
 
         $this->assertEquals('mydb', $connectionconfig->getDatabaseName());
@@ -63,20 +64,12 @@ class DatabaseManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUrlByDatabaseName()
     {
-        $expectedUrl = "mysql://my_username:my_password@localhost:1234/mydb";
-        $path = realpath(__DIR__ . '/../fixtures');
-
-        $dbmanager = new DatabaseManager($path);
-        $this->assertEquals($dbmanager->getUrlByDatabaseName('mydb'), $dbmanager->getUrlByDatabaseName($expectedUrl));
+        $this->assertEquals($this->dbmanager->getUrlByDatabaseName('mydb'), $this->dbmanager->getUrlByDatabaseName($this->expectedUrl));
     }
 
     public function testGetDatabaseConfig()
     {
-        $expectedUrl = "mysql://my_username:my_password@localhost:1234/mydb";
-        $path = realpath(__DIR__ . '/../fixtures');
-
-        $dbmanager = new DatabaseManager($path);
-        $this->assertInstanceOf('LinkORB\Component\DatabaseManager\DatabaseConfig', $dbmanager->getDatabaseConfig($expectedUrl));
+        $this->assertInstanceOf('LinkORB\Component\DatabaseManager\DatabaseConfig', $this->dbmanager->getDatabaseConfig($this->expectedUrl));
     }
 
     /**
@@ -84,8 +77,7 @@ class DatabaseManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDatabaseConfigThrowsInvalidDatabaseException()
     {
-        $dbmanager = new DatabaseManager();
-        $dbmanager->getDatabaseConfig('bad/name');
+        $this->dbmanager->getDatabaseConfig('bad/name');
     }
 
     /**
@@ -93,7 +85,6 @@ class DatabaseManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDatabaseConfigThrowsConfigNotFoundException()
     {
-        $dbmanager = new DatabaseManager();
-        $dbmanager->getDatabaseConfig('database_name_who_havent_config_file');
+        $this->dbmanager->getDatabaseConfig('database_name_who_havent_config_file');
     }
 }
