@@ -43,4 +43,13 @@ class DatabaseManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('my_password', $connectionconfig->getPassword());
         $this->assertEquals('mysql:dbname=mydb;host=localhost;port=1234', $connectionconfig->getDsn());
     }
+
+    public function testGetUrlByDatabaseName()
+    {
+        $expectedUrl = "mysql://my_username:my_password@localhost:1234/mydb";
+        $path = realpath(__DIR__ . '/../fixtures');
+
+        $dbmanager = new DatabaseManager($path);
+        $this->assertEquals($dbmanager->getUrlByDatabaseName('mydb'), $dbmanager->getUrlByDatabaseName($expectedUrl));
+    }
 }

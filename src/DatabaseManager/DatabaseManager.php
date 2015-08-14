@@ -103,6 +103,30 @@ class DatabaseManager
     }
 
     /**
+     * @param  string $dbname
+     * @return string
+     */
+    public function getUrlByDatabaseName($dbname, $connectionkey = 'default')
+    {
+        if ($this->isValidUrl($dbname)) {
+            return $dbname;
+        }
+
+        $databaseconfig = $this->getDatabaseConfigByDatabaseName($dbname);
+        $connectionconfig = $databaseconfig->getConnectionConfig($connectionkey);
+
+        return sprintf(
+            "%s://%s:%s@%s:%s/%s",
+            $connectionconfig->getDriver(),
+            $connectionconfig->getUsername(),
+            $connectionconfig->getPassword(),
+            $connectionconfig->getHost(),
+            $connectionconfig->getPort(),
+            $connectionconfig->getDatabaseName()
+        );
+    }
+
+    /**
      * @param  string  $url
      * @return boolean
      */
