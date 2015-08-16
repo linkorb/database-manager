@@ -14,7 +14,6 @@ use LinkORB\Component\DatabaseManager\DatabaseManager;
 
 /**
  * ConnectionConfigCommand retrieves configuration info
- *
  */
 class ConnectionConfigCommand extends Command
 {
@@ -42,12 +41,12 @@ class ConnectionConfigCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dbname = $input->getArgument('dbname');
-        
+
         $manager = new DatabaseManager();
         $databaseconfig = $manager->getDatabaseConfigByDatabaseName($dbname);
-        
+
         echo "NAME: [" . $databaseconfig->getName() . "]\n";
-        
+
         foreach ($databaseconfig->getConnectionConfigs() as $connectionconfig) {
             echo "    Connection [" . $connectionconfig->getName() . "]\n";
             echo "        dsn:  [" . $connectionconfig->getDsn() . "]\n";
@@ -57,10 +56,7 @@ class ConnectionConfigCommand extends Command
             echo "        port:  [" . $connectionconfig->getPort() . "]\n";
             echo "\n";
         }
-        
+
         $pdo = $manager->getPdo($dbname, 'default');
-        
-        
-        
     }
 }

@@ -15,13 +15,16 @@
         "symfony/console": "~2.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.2",
-        "phpunit/dbunit": "~1.3",
-        "doctrine/dbal": "~2.4"
+        "phpunit/phpunit": "~4.6"
     },
     "autoload": {
         "psr-4": {
             "LinkORB\\Component\\DatabaseManager\\": "src/DatabaseManager"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LinkORB\\Component\\DatabaseManager\\Tests\\": "tests/DatabaseManager"
         }
     },
     "bin": ["bin/database-manager"],

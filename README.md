@@ -5,11 +5,14 @@ Database Manager helps developers manage their dev/test/prod databases.
 Features:
 
 * Load database connection configuration
-* Instantiate PDO or Doctrine DBAL connections
-* Update database schema based on schema files
-* Load fixtures into your database
+* Instantiate PDO connections
 
-Database Manager can be used both as a command-line utility as a PHP library
+Database Manager can be used both as a command-line utility as a PHP library.
+
+## Suggestions
+
+- https://github.com/dbtk/schema-loader - to load schemas
+- https://github.com/linkorb/haigha - to load alice fixtures
 
 ## Installation
 
@@ -19,7 +22,7 @@ Use this installation path if you wish to use Database Manager in your PHP proje
 
 Add the following to your `composer.json` file, in the `require` section:
 
-    "linkorb/database-manager": "dev-master"
+    "linkorb/database-manager": "~2.0"
 
 Then run `composer update` to install the new dependency
 
@@ -40,8 +43,11 @@ Database connection information is stored in a simple .ini file. Here's a workin
 
     name = mydb
     server = localhost
+    port = 3306
     username = my_username
     password = my_password
+
+Note that `port` key is optional.
 
 Store your database in `/share/config/database/[databasename].conf`
 
@@ -51,24 +57,21 @@ Store your database in `/share/config/database/[databasename].conf`
 
 This will load the configuration from `/share/config/database/[databasename].conf`, and display it on the console.
 
-`bin/database-manager database:loadschema <dbname> </path/to/schema.xml> [--apply]`
-
-Load schema from `/path/to/schema.xml`, and update database `dbname`.
-Without the `--apply` flag, only changes are displayed. 
-When the `--apply` flag is provided, the actual changes are applied
-
-`bin/database-manager database:loadfixture <dbname> </path/to/fixture.yml`
-
-Load the fixture data from `/path/to/fixture.yml`, and add it to `dbname`.
-
-
 ## Examples
 
 Please refer to the `examples/` directory for:
 
 * Example database .conf file
-* Example schema xml files
-* Example fixture (data) yml files
+
+## Testing
+
+Install phpunit and copy `phpunit.xml.dist` to `phpunit.xml`:
+
+```bash
+cp phpunit.xml.dist phpunit.xml
+```
+
+Type `phpunit` in terminal to run tests.
 
 ## Contributing
 
