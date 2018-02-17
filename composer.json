@@ -10,10 +10,8 @@
         "email": "j.faassen@linkorb.com",
         "role": "Development"
     }],
-    "require": {
-        "symfony/console": "~2.5"
-    },
     "require-dev": {
+        "symfony/console": "~3.0",
         "phpunit/phpunit": "~4.6",
         "linkorb/conventions-checker": "~1.1"
     },
